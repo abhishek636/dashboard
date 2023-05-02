@@ -1,5 +1,11 @@
-function ShowPeople({ people, toggleHandler }) {
-	const friends = people.houses.reduce((acc, cv) => {
+import { useContext } from "react";
+import { UserContext } from "./context/UserContext";
+
+function ShowPeople() {
+
+  const user = useContext(UserContext)
+
+	const friends = user.people.houses.reduce((acc, cv) => {
 		return acc.concat(cv.people);
 	}, []);
 

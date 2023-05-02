@@ -1,13 +1,19 @@
-export default function Card({userInfo}) {
-  return (
+import { useContext } from "react";
+import { UserContext } from "./context/UserContext";
+
+export default function Card() {
+
+	const user = useContext(UserContext)
+
+  	return (
 		<div className="card">
 			<div className="card-info">
-			  <img src={userInfo.avatarURL} alt="Avatar" style={{ width: "50%", height: "50%" }} />
+			  <img src={user.userInfo.avatarURL} alt="Avatar" style={{ width: "50%", height: "50%" }} />
 				<h4>
-					<b>{userInfo.name}</b>
+					<b>{user.userInfo.name}</b>
 				</h4>
 			</div>
-				<p>{userInfo.description}</p>
+				<p>{user.userInfo.description}</p>
 		</div>
-  );
+  	);
 }

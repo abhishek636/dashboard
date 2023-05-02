@@ -8,6 +8,7 @@ import people from "./got.json";
 import "./styles.css";
 import verifyLogin from "./utils";
 import ErrorBoundary from "./ErrorBoundary";
+import { UserContext } from "./context/UserContext";
 
 export default class App extends React.Component {
   state = {
@@ -16,7 +17,8 @@ export default class App extends React.Component {
     isModalOpen: false,
     data: null,
     userInfo: null,
-    people: people
+    people: people,
+    showPeopleClosed:true,
   };
 
   changeNavbar = () => {
@@ -45,32 +47,35 @@ export default class App extends React.Component {
     });
   };
 
-  render() {
-    const { isLogin, data, userInfo } = this.state;
+  toggleHandler = () => {
+    this.setState((prev) => ({showPeopleClosed: !prev.showPeopleClosed}))
+  }
 
+  render() {
+    const { isLogin, data, userInfo, showPeopleClosed,people } = this.state;
+    let changeNavbar=this.changeNavbar
+    let logoutHandler = this.logoutHandler
+    let handleModal = this.handleModal
+    let toggleHandler = this.toggleHandler
+    let loginHandler = this.loginHandler
     return (
       <div className={`container ${this.state.navClosed ? "nav-closed" : ""}`}>
-        <Header
-          isLogin={isLogin}
-          changeNavbar={this.changeNavbar}
-          logoutHandler={this.logoutHandler}
-          handleModal={this.handleModal}
-          userInfo={userInfo}
-        />
-        <div className="main">
-          <Sidebar userInfo={userInfo} isLogin={isLogin} />
-          <ErrorBoundary>
-            <Main isLogin={isLogin} data={data} people={people} userInfo={userInfo} />
-          </ErrorBoundary>
-        </div>
-        {this.state.isModalOpen ? (
-          <Auth
-            handleModal={this.handleModal}
-            loginHandler={this.loginHandler}
-          />
-        ) : (
-          ""
-        )}
+        <UserContext.Provider value={{
+          isLogin,data,userInfo,showPeopleClosed,people,changeNavbar,logoutHandler,handleModal,toggleHandler, loginHandler
+        }}>
+          <Header/>
+          <div className="main">
+            <Sidebar/>
+            <ErrorBoundary>
+              <Main />
+            </ErrorBoundary>
+          </div>
+          {this.state.isModalOpen ? (
+            <Auth/>
+          ) : (
+            ""
+          )}
+        </UserContext.Provider>
       </div>
     );
   }
