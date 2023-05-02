@@ -1,23 +1,26 @@
 import React from "react";
+import { UserContext } from "./context/UserContext";
 
 class Auth extends React.Component {
   state = {
     email: "",
     password: ""
   };
+
+  static contextType = UserContext;
+
   handleInput = ({ target: { name, value } }) => {
     this.setState({ [name]: value });
   };
   render() {
-    let { loginHandler, handleModal } = this.props;
     return (
       <div className="auth">
         <form
           onSubmit={(e) => {
             let { email, password } = this.state;
             e.preventDefault();
-            loginHandler(email, password);
-            handleModal(false);
+            this.context.loginHandler(email, password);
+            this.context.handleModal(false);
           }}
         >
           <h3 className="center">Admin Login</h3>

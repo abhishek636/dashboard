@@ -1,22 +1,13 @@
-import { Component } from "react";
+import React from "react";
 import ShowPeople from "./ShowPeople";
+import { UserContext } from "./context/UserContext";
 
-class People extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showPeopleClosed: true
-    }
-  }
-
-  toggleHandler = () => {
-    this.setState((prev) => ({showPeopleClosed: !prev.showPeopleClosed}))
-  }
+class People extends React.Component {
+  static contextType = UserContext;
 
   render () {
-    const { isLogin, people } = this.props;
 
-    if (!(isLogin && people)) {
+    if (!(this.context.isLogin && this.context.people)) {
 		throw new Error("Auth Failed");
     }
 
@@ -24,9 +15,9 @@ class People extends Component {
 			<>
         <h1 className="center">🚀 Welcome to People page!</h1>
         <div className="center">
-          <button className="show-people" onClick={this.toggleHandler}>Show People</button>
+          <button className="show-people" onClick={this.context.toggleHandler}>Show People</button>
         </div>
-        {this.state.showPeopleClosed ? "" : <ShowPeople people={people} toggleHandler={this.toggleHandler} />}
+        {this.context.showPeopleClosed ? "" : <ShowPeople />}
 			</>
 		);
   }

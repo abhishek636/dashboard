@@ -1,13 +1,18 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "./context/UserContext";
 
-function Articles({ isLogin, data }) {
-  if (!isLogin) {
+function Articles() {
+
+  const user = useContext(UserContext)
+
+  if (!user.isLogin) {
     throw new Error("Auth Failed");
   }
 
   return (
     <ul className="articles">
-      {data.map((article, index) => (
+      {user.data.map((article, index) => (
         <li key={index}>
           <Link to={"articles/" + article.slug}>
             <h3>{article.title}</h3>

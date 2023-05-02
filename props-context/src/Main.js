@@ -6,17 +6,23 @@ import Help from "./Help";
 import Home from "./Home";
 import NotFound from "./NotFound";
 import Peoples from "./People";
+import { useContext } from "react";
+import { UserContext } from "./context/UserContext";
 
-function Main({ isLogin, data, people, userInfo }) {
+function Main() {
+
+	const user = useContext(UserContext);
+	
+
   return (
 		<div className="page-content">
 			<Switch>
-				<Route path="/" exact component={() => <Home isLogin={isLogin} userInfo={userInfo} />} />
+				<Route path="/" exact component={() => <Home />} />
 				<Route path="/help" component={Help} />
-				<Route path="/articles" exact component={() => <Articles isLogin={isLogin} data={data} />} />
-				<Route path="/people" component={() => <Peoples isLogin={isLogin} people={people} />} />
+				<Route path="/articles" exact component={() => <Articles/>} />
+				<Route path="/people" component={() => <Peoples />} />
 				<Route path="/contact" component={Contact} />
-				<Route path="/articles/:slug" component={({ match }) => <Article isLogin={isLogin} slug={match.params.slug} />} />
+				<Route path="/articles/:slug" component={({ match }) => <Article slug={match.params.slug} />} />
 				<Route path="*" component={NotFound} />
 			</Switch>
 		</div>
